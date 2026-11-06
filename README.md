@@ -21,7 +21,7 @@ iPhone の Safari で遊べる 3D カートレース。HTML 1 ファイル（`in
 
 ## iPhone で遊ぶ
 
-1. 公開 URL を Safari で開く（下の「公開」を参照）。
+1. https://kakankan677.github.io/kart-race/ を Safari で開く。
 2. 「傾けて操作」を押すと、iOS が「動作と方向へのアクセス」を確認するので許可する。
 3. 共有ボタン →「ホーム画面に追加」で、全画面のアプリとして起動できる。
 
@@ -29,12 +29,15 @@ iPhone の Safari で遊べる 3D カートレース。HTML 1 ファイル（`in
 
 ## 公開
 
-claude.ai の Artifact として公開している。URL を開けば誰の iPhone でも動く。
+GitHub Pages で公開している。傾き操作を使うにはこの URL を開く。
 
-- 公開 URL: https://claude.ai/artifact/8qKGNfNWsEDJ1j57iNNX9p （2026-11-06 公開。初期状態は非公開なので、他の人に見せるにはページの Share メニューから共有を有効にする）
+- 公開 URL: https://kakankan677.github.io/kart-race/ （URL を知っていれば誰でも開ける）
+- 公開手順: `main` ブランチに push すると `index.html` がそのまま公開される。https であることが条件（傾きセンサーの許可に必要）。
+
+claude.ai の Artifact 版も残している。iframe の中で動くため傾き操作は使えず、タッチ操作になる。
+
+- 公開 URL: https://claude.ai/artifact/8qKGNfNWsEDJ1j57iNNX9p （初期状態は非公開なので、他の人に見せるにはページの Share メニューから共有を有効にする）
 - 公開手順: `python3 scripts/make-artifact.py` で `dist/kart-rush.html` を作り、Claude Code の Artifact ツールで同じパスを再公開する。`index.html` のマーカー（`ARTIFACT-HEAD-*` / `ARTIFACT-BODY-*`）の内側だけが公開対象。
-
-別の置き場所（GitHub Pages など静的ホスティング）でも `index.html` をそのまま置けば動く。https であることが条件（傾きセンサーの許可に必要）。
 
 ## 確認済み環境
 
@@ -44,7 +47,7 @@ claude.ai の Artifact として公開している。URL を開けば誰の iPho
 ## 設計メモ
 
 - **1 ファイル・ビルドなし**: Node や Xcode を入れずに作れて、どこにでも置ける。外部依存は cdnjs の Three.js 0.160.0（UMD ビルド）だけ。
-- **Artifact で配布**: Apple Developer Program（有料）や 7 日ごとの再署名なしで、URL だけで他人の iPhone に届く。代わりに、Artifact の iframe ではセンサー類が使えない可能性があり、その場合はタッチ操作に自動で切り替える。
+- **GitHub Pages で配布**: Apple Developer Program（有料）や 7 日ごとの再署名なしで、URL だけで他人の iPhone に届く。最初は Artifact で配ったが、iPhone で傾きセンサーが使えない警告が出た。iOS は別ドメインの iframe にセンサーの許可を出さないと報告されているため、単独ページとして開ける GitHub Pages を正式な配布先にした。センサーが使えない環境ではタッチ操作に自動で切り替える。
 - **コース**: 12 個の制御点を Catmull-Rom スプラインでつないだ閉ループを 600 点に等間隔サンプリングし、点の添字をそのまま進行度にしている。最小カーブ半径は約 8.4（道幅 8）で、ヘアピンはドリフトしないと曲がりきれない。
 - **物理はアーケード**: 速度は目標値へ指数的に近づける。ドリフト中は曲がる方向を固定し、ハンドルで強弱だけ変える。コース外は目標速度を半分にする。
 - **AI**: スプラインの先の点へ向かう単純な追従。先の道の曲がり具合で速度を落とし、プレイヤーとの差に応じて少し速く・遅くする（接戦になるように）。

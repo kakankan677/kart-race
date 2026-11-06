@@ -5,7 +5,8 @@
 ## このプロジェクトの前提
 
 - 成果物は `index.html` 1 ファイル。ビルド工程も npm もない。外部依存は cdnjs の Three.js（バージョン固定の UMD ビルド）だけ。
-- 配布先は claude.ai の Artifact。`scripts/make-artifact.py` でマーカー内を切り出した `dist/kart-rush.html` を公開する（dist/ はコミットしない）。
+- 配布先は GitHub Pages（`main` の `index.html` をそのまま公開）。公開リポジトリなので、機密情報や個人のメールアドレスを入れない。
+- claude.ai の Artifact 版も残している。`scripts/make-artifact.py` でマーカー内を切り出した `dist/kart-rush.html` を公開する（dist/ はコミットしない）。
 - 検証はブラウザで行う。コンソールの `KR.dbg.auto = true` で AI がプレイヤーを運転し、3 周→結果画面まで自動で通せる。
 - 傾き操作（DeviceOrientation）は実機の iPhone でしか確認できない。変更したら README の「確認済み環境」を更新する。
 - 設計の判断理由は README の「設計メモ」に置く。計画・教訓は workspace の tasks/ に記録する。
