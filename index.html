@@ -450,6 +450,7 @@ const sfx = {
     src.connect(bp); bp.connect(this.driftGain); this.driftGain.connect(this.master); src.start();
   },
   resume() { if (this.ctx && this.ctx.state !== 'running') this.ctx.resume(); },
+  suspend() { if (this.ctx && this.ctx.state === 'running') this.ctx.suspend(); },
   engine(ratio, boost, on) {
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
@@ -825,7 +826,9 @@ $('#btnTouch').addEventListener('click', () => startRace('touch'));
 $('#btnKey').addEventListener('click', () => startRace('key'));
 $('#btnRetry').addEventListener('click', () => startRace(input.mode));
 $('#btnTitle').addEventListener('click', showTitle);
-document.addEventListener('visibilitychange', () => { if (!document.hidden) sfx.resume(); });
+// Hidden tabs stop drawing frames, so the engine would hold its last note forever: silence the context instead.
+document.addEventListener('visibilitychange', () => { if (document.hidden) sfx.suspend(); else sfx.resume(); });
+window.addEventListener('pagehide', () => sfx.suspend());
 window.addEventListener('pointerdown', () => sfx.resume(), { passive: true });
 
 // debug hook (console): KR.auto = true lets the AI drive the player; KR.state / KR.karts expose race state
